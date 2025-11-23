@@ -1,0 +1,24 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "api.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "dashboard-frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": { "outputDirectory": "dist" }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "api.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "dashboard-frontend/dist/$1"
+    }
+  ]
+}
