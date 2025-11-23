@@ -11,8 +11,7 @@
     },
     {
       "src": "dashboard-frontend/package.json",
-      "use": "@vercel/static-build",
-      "config": { "outputDirectory": "dist" }
+      "use": "@vercel/static-build"
     }
   ],
   "routes": [
@@ -22,11 +21,11 @@
     },
     {
       "src": "/",
-      "dest": "dashboard-frontend/dist/index.html"
+      "dest": "dist/index.html"
     },
     {
       "src": "/(.*)",
-      "dest": "dashboard-frontend/dist/$1"
+      "dest": "dist/$1"
     }
   ]
 }
