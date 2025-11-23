@@ -3,12 +3,12 @@
   "buildCommand": "pip install -r requirements.txt && npm install --prefix dashboard-frontend && npm run build --prefix dashboard-frontend && mkdir -p .vercel_output/static && cp -R dashboard-frontend/dist/. ./.vercel_output/static/",
   "outputDirectory": ".vercel_output/static",
   "functions": {
-    "api.py": {
+    "api/api.py": {
       "memory": 1024
     }
   },
   "routes": [
-    { "src": "/api/(.*)", "dest": "api.py" },
+    { "src": "/api/(.*)", "dest": "api/api.py" },
     { "src": "/(.*)", "dest": "/.vercel_output/static/$1" }
   ]
 }
