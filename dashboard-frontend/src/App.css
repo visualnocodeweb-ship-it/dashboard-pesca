@@ -27,6 +27,7 @@ body {
   text-align: left;
   display: flex;
   justify-content: flex-start;
+  flex-wrap: wrap; /* Allow items to wrap to the next line */
   gap: 10px; /* Space between buttons */
 }
 
@@ -101,6 +102,22 @@ main {
 
 /* --- Media Queries for Responsiveness --- */
 @media (max-width: 768px) {
+  .main-nav {
+    justify-content: center; /* Center buttons when they wrap */
+    gap: unset; /* Unset gap to use margin for spacing */
+  }
+
+  .nav-button {
+    padding: 10px 15px; /* Adjust padding for smaller screens */
+    font-size: 0.8em; /* Reduced font size for better fit */
+    border-radius: 6px;
+    letter-spacing: 0;
+    text-transform: none; /* Revert text transform for smaller screens */
+    /* Allow text to wrap inside the button */
+    flex: 0 1 auto; /* Allow shrinking but not aggressive growing, size based on content */
+    margin: 0 5px 10px; /* Spacing between buttons, and vertical spacing when wrapped */
+  }
+
   main, .App-header {
     padding: 15px;
   }
@@ -117,12 +134,13 @@ main {
     font-size: 3em;
   }
 
-  .nav-button {
-    padding: 10px 15px; /* Adjust padding for smaller screens */
-    font-size: 0.85em;
-    border-radius: 6px;
-    letter-spacing: 0;
-    text-transform: none; /* Revert text transform for smaller screens */
+  /* Add text overflow handling for titles in dashboard components */
+  .counter-container h2,
+  .chart-container h2,
+  .latest-records-container h2 {
+    white-space: nowrap; /* Prevent text from wrapping */
+    overflow: hidden; /* Hide overflowing text */
+    text-overflow: ellipsis; /* Display ellipsis for clipped text */
   }
 }
 
