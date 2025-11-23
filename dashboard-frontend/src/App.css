@@ -31,7 +31,7 @@ body {
 }
 
 .nav-button {
-  background-color: #3f51b5; /* A more prominent default blue */
+  background-color: #4a648b; /* A muted, professional blue-grey */
   border: none; /* No border for a cleaner look */
   color: white;
   padding: 12px 25px; /* Slightly more padding */
@@ -48,14 +48,14 @@ body {
 }
 
 .nav-button:hover {
-  background-color: #5c6bc0; /* Lighter shade on hover */
+  background-color: #5d7fa3; /* Lighter shade on hover */
   transform: translateY(-2px); /* Slight lift effect */
   box-shadow: 0 4px 10px rgba(0,0,0,0.3); /* Enhanced shadow on hover */
 }
 
 .nav-button.active {
-  background-color: #ff9800; /* Distinct active color (orange) */
-  color: #2c3e50; /* Dark text for contrast */
+  background-color: #5cb85c; /* A professional green for active state */
+  color: white; /* White text for contrast */
   box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Keep shadow */
   transform: translateY(0); /* Reset transform */
 }
