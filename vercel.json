@@ -4,7 +4,10 @@
     {
       "src": "api.py",
       "use": "@vercel/python",
-      "config": { "handler": "api.app" }
+      "config": {
+        "handler": "api.app",
+        "runtime": "python3.9"
+      }
     },
     {
       "src": "dashboard-frontend/package.json",
@@ -15,7 +18,7 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "api.py"
+      "dest": "/api"
     },
     {
       "src": "/",
