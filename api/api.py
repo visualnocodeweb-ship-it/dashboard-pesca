@@ -39,6 +39,29 @@ def get_cached_dataframe():
     else:
         print("--- Using CACHED data ---")
     return cache.df
+
+def _filter_by_date_range(df: pd.DataFrame, start_date: str = None, end_date: str = None) -> pd.DataFrame:
+    """
+    Helper function to filter a DataFrame by a date range.
+    Assumes DATE_COLUMN exists and is in a format pandas can convert.
+    """
+    if df.empty:
+        return df
+
+    df_copy = df.copy()
+    df_copy[DATE_COLUMN] = pd.to_datetime(df_copy[DATE_COLUMN], errors='coerce', dayfirst=True)
+    df_copy = df_copy.dropna(subset=[DATE_COLUMN])
+
+    if start_date:
+        start_ts = pd.to_datetime(start_date, dayfirst=True)
+        df_copy = df_copy[df_copy[DATE_COLUMN] >= start_ts]
+    if end_date:
+        end_ts = pd.to_datetime(end_date, dayfirst=True)
+        # Include the entire end day
+        df_copy = df_copy[df_copy[DATE_COLUMN] <= end_ts + pd.Timedelta(days=1, seconds=-1)]
+    
+    return df_copy
+
 # -------------------------
 
 # CORS Middleware
@@ -51,25 +74,25 @@ app.add_middleware(
 )
 
 @app.get("/api/chart-data")
-def get_chart_data():
+def get_chart_data(start_date: str = None, end_date: str = None):
     """
     Endpoint para obtener y procesar los datos para el gráfico de conteo por día.
+    Acepta parámetros opcionales `start_date` y `end_date` para filtrar por rango.
     """
     try:
         df = get_cached_dataframe()
         if df is None or df.empty:
-            # Return empty list as the frontend expects an array for the chart
             return []
 
-        start_index = PERMIT_START_ROW - 2
-        if len(df.index) <= start_index:
+        df_filtered = df.iloc[PERMIT_START_ROW - 2:].copy()
+        
+        # Apply date filtering
+        df_filtered = _filter_by_date_range(df_filtered, start_date, end_date)
+
+        if df_filtered.empty:
             return []
-        
-        df_filtered = df.iloc[start_index:].copy()
-        
+
         df_filtered[DATE_COLUMN] = pd.to_datetime(df_filtered[DATE_COLUMN], errors='coerce', dayfirst=True)
-        
-        # Safer alternative to inplace=True
         df_filtered = df_filtered.dropna(subset=[DATE_COLUMN])
         
         daily_counts = df_filtered.groupby(df_filtered[DATE_COLUMN].dt.date).size().reset_index(name='count')
@@ -79,42 +102,45 @@ def get_chart_data():
         return daily_counts.to_dict(orient='records')
     except Exception as e:
         print(f"API ERROR in /api/chart-data: {e}")
-        # Raising HTTPException will send a proper error response to the frontend
         raise HTTPException(status_code=500, detail="Error processing chart data on the server.")
 
 
 @app.get("/api/permit-count")
-def get_permit_count():
+def get_permit_count(start_date: str = None, end_date: str = None):
     """
-    Endpoint para contar el número de permisos vendidos desde una fila específica.
+    Endpoint para contar el número de permisos vendidos desde una fila específica,
+    opcionalmente filtrado por rango de fechas.
     """
     df = get_cached_dataframe()
     if df is None:
         return {"error": "Could not connect to the worksheet."}
 
-    total_data_rows = len(df.index)
-    start_index = PERMIT_START_ROW - 2
+    df_filtered = df.iloc[PERMIT_START_ROW - 2:].copy()
     
-    permit_count = 0
-    if total_data_rows > start_index:
-        permit_count = total_data_rows - start_index
+    # Apply date filtering
+    df_filtered = _filter_by_date_range(df_filtered, start_date, end_date)
+
+    permit_count = len(df_filtered.index)
         
     return {"count": permit_count}
 
 @app.get("/api/total-recaudacion")
-def get_total_recaudacion():
+def get_total_recaudacion(start_date: str = None, end_date: str = None):
     """
-    Endpoint para sumar los ingresos netos desde una fila específica.
+    Endpoint para sumar los ingresos netos desde una fila específica,
+    opcionalmente filtrado por rango de fechas.
     """
     df = get_cached_dataframe()
     if df is None:
         return {"error": "Could not connect to the worksheet."}
 
-    start_index = PERMIT_START_ROW - 2
-    if len(df.index) <= start_index:
-        return {"total": 0}
+    df_filtered = df.iloc[PERMIT_START_ROW - 2:].copy()
+    
+    # Apply date filtering
+    df_filtered = _filter_by_date_range(df_filtered, start_date, end_date)
 
-    df_filtered = df.iloc[start_index:]
+    if df_filtered.empty:
+        return {"total": 0}
     
     if RECAUDACION_COLUMN not in df_filtered.columns:
         return {"error": f"Column '{RECAUDACION_COLUMN}' not found."}
@@ -126,20 +152,23 @@ def get_total_recaudacion():
 
 
 @app.get("/api/recaudacion-por-dia")
-def get_recaudacion_por_dia():
+def get_recaudacion_por_dia(start_date: str = None, end_date: str = None):
     """
-    Endpoint para obtener la recaudación total por día.
+    Endpoint para obtener la recaudación total por día,
+    opcionalmente filtrado por rango de fechas.
     """
     try:
         df = get_cached_dataframe()
         if df is None or df.empty:
             return []
 
-        start_index = PERMIT_START_ROW - 2
-        if len(df.index) <= start_index:
-            return []
+        df_filtered = df.iloc[PERMIT_START_ROW - 2:].copy()
         
-        df_filtered = df.iloc[start_index:].copy()
+        # Apply date filtering
+        df_filtered = _filter_by_date_range(df_filtered, start_date, end_date)
+
+        if df_filtered.empty:
+            return []
         
         # Ensure required columns exist
         if DATE_COLUMN not in df_filtered.columns or RECAUDACION_COLUMN not in df_filtered.columns:
@@ -165,9 +194,10 @@ def get_recaudacion_por_dia():
 
 
 @app.get("/api/categoria-pesca")
-def get_categoria_pesca():
+def get_categoria_pesca(start_date: str = None, end_date: str = None):
     """
-    Endpoint para contar la cantidad de cada 'nombre_producto'.
+    Endpoint para contar la cantidad de cada 'nombre_producto',
+    opcionalmente filtrado por rango de fechas.
     """
     PRODUCTO_COLUMN = "nombre_producto"
     try:
@@ -175,11 +205,13 @@ def get_categoria_pesca():
         if df is None or df.empty:
             return []
 
-        start_index = PERMIT_START_ROW - 2
-        if len(df.index) <= start_index:
+        df_filtered = df.iloc[PERMIT_START_ROW - 2:].copy()
+
+        # Apply date filtering
+        df_filtered = _filter_by_date_range(df_filtered, start_date, end_date)
+
+        if df_filtered.empty:
             return []
-        
-        df_filtered = df.iloc[start_index:]
 
         if PRODUCTO_COLUMN not in df_filtered.columns:
             raise HTTPException(status_code=400, detail=f"Column '{PRODUCTO_COLUMN}' not found.")
@@ -195,9 +227,10 @@ def get_categoria_pesca():
 
 
 @app.get("/api/regiones-count")
-def get_regiones_count():
+def get_regiones_count(start_date: str = None, end_date: str = None):
     """
-    Endpoint para contar la ocurrencia de regiones específicas.
+    Endpoint para contar la ocurrencia de regiones específicas,
+    opcionalmente filtrado por rango de fechas.
     """
     REGIONES_COLUMN = "Region/es"
     REGIONES_A_CONTAR = ["Confluencia", "Comarca", "Lagos del Sur", "Pehuén", "Alto Neuquén", "Limay", "Vaca Muerta"]
@@ -207,11 +240,13 @@ def get_regiones_count():
         if df is None or df.empty:
             return []
 
-        start_index = PERMIT_START_ROW - 2
-        if len(df.index) <= start_index:
+        df_filtered = df.iloc[PERMIT_START_ROW - 2:].copy()
+
+        # Apply date filtering
+        df_filtered = _filter_by_date_range(df_filtered, start_date, end_date)
+
+        if df_filtered.empty:
             return []
-        
-        df_filtered = df.iloc[start_index:]
 
         if REGIONES_COLUMN not in df_filtered.columns:
             raise HTTPException(status_code=400, detail=f"Column '{REGIONES_COLUMN}' not found.")

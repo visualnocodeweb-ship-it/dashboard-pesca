@@ -19,6 +19,9 @@ function RecaudacionDashboard() {
   const [chartLoading, setChartLoading] = useState(true);
   const [chartError, setChartError] = useState<string | null>(null);
 
+  // State for visibility of total recaudacion
+  const [showTotal, setShowTotal] = useState<boolean>(false);
+
   // Effect for fetching the total
   useEffect(() => {
     const fetchTotal = () => {
@@ -62,8 +65,18 @@ function RecaudacionDashboard() {
       <div className="counter-container">
         <h2>Total Recaudación</h2>
         {totalLoading ? <p>Cargando...</p> : totalError ? <p className="error">{totalError}</p> :
-          <div className="counter-value">
-            {new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(total)}
+          <div className="counter-value-wrapper">
+            <button
+              onClick={() => setShowTotal(!showTotal)}
+              className="toggle-visibility-button"
+            >
+              {showTotal ? 'Ocultar' : 'Mostrar'}
+            </button>
+            {showTotal && (
+              <div className="counter-value">
+                {new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(total)}
+              </div>
+            )}
           </div>
         }
       </div>

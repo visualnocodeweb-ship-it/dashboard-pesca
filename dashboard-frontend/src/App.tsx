@@ -4,7 +4,8 @@ import PermisosDashboard from './PermisosDashboard';
 import RecaudacionDashboard from './RecaudacionDashboard';
 import CategoriaPescaDashboard from './CategoriaPescaDashboard';
 import RegionesDashboard from './RegionesDashboard';
-import LatestRecordsDashboard from './LatestRecordsDashboard'; // Import the new component
+import LatestRecordsDashboard from './LatestRecordsDashboard';
+import ReportesDashboard from './ReportesDashboard'; // Import the new component
 
 function App() {
   const [activeTab, setActiveTab] = useState('permisos');
@@ -38,11 +39,17 @@ function App() {
           >
             Regiones
           </button>
-          <button // New button for Latest Records
+          <button
             className={`nav-button ${activeTab === 'ultimos-registros' ? 'active' : ''}`}
             onClick={() => setActiveTab('ultimos-registros')}
           >
             Últimos Registros
+          </button>
+          <button // New button for Reports
+            className={`nav-button ${activeTab === 'reportes' ? 'active' : ''}`}
+            onClick={() => setActiveTab('reportes')}
+          >
+            Reportes
           </button>
         </nav>
       </header>
@@ -51,7 +58,8 @@ function App() {
         {activeTab === 'recaudacion' && <RecaudacionDashboard />}
         {activeTab === 'categoria' && <CategoriaPescaDashboard />}
         {activeTab === 'regiones' && <RegionesDashboard />}
-        {activeTab === 'ultimos-registros' && <LatestRecordsDashboard />} {/* Render new component */}
+        {activeTab === 'ultimos-registros' && <LatestRecordsDashboard />}
+        {activeTab === 'reportes' && <ReportesDashboard />} {/* Render new component */}
       </main>
     </div>
   );
