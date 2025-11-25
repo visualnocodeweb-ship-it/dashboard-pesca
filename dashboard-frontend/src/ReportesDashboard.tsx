@@ -54,7 +54,7 @@ function ReportesDashboard() {
       const opt = {
         margin:       0.5,
         filename:     'informe_fin_semana_largo.pdf',
-        image:        { type: 'jpeg', quality: 0.98 },
+        image:        { type: 'jpeg' as const, quality: 0.98 },
         html2canvas:  { scale: 2 },
         jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
       };
