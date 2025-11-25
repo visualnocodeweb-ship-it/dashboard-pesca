@@ -1,4 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+declare module 'html2pdf.js/dist/html2pdf.min' {
+  const html2pdf: any; 
+  export default html2pdf;
+}
+
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import html2pdf from 'html2pdf.js/dist/html2pdf.min';
