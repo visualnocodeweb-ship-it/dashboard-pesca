@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import html2pdf from 'html2pdf.js/dist/html2pdf.min';
+import html2pdf from 'html2pdf.js';
 
 // Interfaces for data
 interface DailyCountData {
