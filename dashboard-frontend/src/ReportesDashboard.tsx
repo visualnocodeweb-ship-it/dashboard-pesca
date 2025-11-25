@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LabelList } from 'recharts';
 import html2pdf from 'html2pdf.js';
 
 // Interfaces for data
@@ -156,7 +156,9 @@ function ReportesDashboard() {
                       <YAxis />
                       <Tooltip />
                       <Legend />
-                      <Bar dataKey="count" fill="#8884d8" name="Permisos Vendidos" />
+                      <Bar dataKey="count" fill="#8884d8" name="Permisos Vendidos" >
+                        <LabelList dataKey="count" position="top" />
+                      </Bar>
                     </ComposedChart>
                   </ResponsiveContainer>
                 </div>
@@ -171,7 +173,9 @@ function ReportesDashboard() {
                       <YAxis tickFormatter={(value) => new Intl.NumberFormat('es-AR', { notation: 'compact', compactDisplay: 'short' }).format(value)} />
                       <Tooltip formatter={(value: number) => new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(value)} />
                       <Legend />
-                      <Line type="monotone" dataKey="recaudacion" stroke="#82ca9d" name="Recaudación" />
+                      <Line type="monotone" dataKey="recaudacion" stroke="#82ca9d" name="Recaudación" >
+                        <LabelList dataKey="recaudacion" position="top" dy={10} formatter={(value: number) => new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(value)} style={{ fontSize: '10px' }} />
+                      </Line>
                     </ComposedChart>
                   </ResponsiveContainer>
                 </div>
@@ -201,7 +205,9 @@ function ReportesDashboard() {
                       <YAxis />
                       <Tooltip />
                       <Legend />
-                      <Bar dataKey="count" fill="#ff7300" name="Cantidad" />
+                      <Bar dataKey="count" fill="#ff7300" name="Cantidad" >
+                        <LabelList dataKey="count" position="top" />
+                      </Bar>
                     </ComposedChart>
                   </ResponsiveContainer>
                 </div>
@@ -235,15 +241,60 @@ function ReportesDashboard() {
                       </div>
                     )}
                   </div>
+
+                  {/* New: Daily Summary */}
+                  {lwPermitsData.length > 0 && lwRevenueData.length > 0 && (
+                    <div className="daily-summary-section" style={{ marginTop: '20px' }}>
+                      <h5>Detalle por Día:</h5>
+                      {lwPermitsData.map((data, index) => (
+                        <div key={data.date} className="summary-item-daily" style={{ marginBottom: '5px' }}>
+                          <span style={{ fontWeight: 'bold' }}>{data.date}:</span>{' '}
+                          <span>Permisos Vendidos: {data.count}</span>{' '}
+                          {lwRevenueData[index] && (
+                            <span>
+                              Recaudación: {new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(lwRevenueData[index].recaudacion)}
+                            </span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
               </div>
-              {/* PDF Download Button at the end */}
-              <div style={{ textAlign: 'center', marginTop: '30px' }}>
-                <button className="nav-button" onClick={handleDownloadPdf}>
-                  Descargar en PDF
-                </button>
-              </div>
+                            {lwRegionData.length > 0 && (
+                              <div style={{ marginTop: '30px', borderTop: '1px solid #eee', paddingTop: '20px' }}>
+                                <h4>Desglose por Región (Total del Período):</h4>
+                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '15px' }}>
+                                  {lwRegionData.map(region => (
+                                    <div key={region.name} style={{ flex: '1 1 auto', minWidth: '150px', padding: '10px', border: '1px solid #ddd', borderRadius: '5px', backgroundColor: '#f9f9f9' }}>
+                                      <span style={{ fontWeight: 'bold' }}>{region.name}:</span> {region.count}
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+              
+                            {/* New: Categories Breakdown */}
+                            {lwCategoryData.length > 0 && (
+                              <div style={{ marginTop: '30px', borderTop: '1px solid #eee', paddingTop: '20px' }}>
+                                <h4>Desglose por Categoría (Total del Período):</h4>
+                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '15px' }}>
+                                  {lwCategoryData.map(category => (
+                                    <div key={category.name} style={{ flex: '1 1 auto', minWidth: '150px', padding: '10px', border: '1px solid #ddd', borderRadius: '5px', backgroundColor: '#f9f9f9' }}>
+                                      <span style={{ fontWeight: 'bold' }}>{category.name}:</span> {category.count}
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+              
+                            {/* PDF Download Button at the end */}
+                            <div style={{ textAlign: 'center', marginTop: '30px' }}>
+                              <button className="nav-button" onClick={handleDownloadPdf}>
+                                Descargar en PDF
+                              </button>
+                            </div>
             </div>
           )}
         </div>
