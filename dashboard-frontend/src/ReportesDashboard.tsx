@@ -174,7 +174,7 @@ function ReportesDashboard() {
                       <Tooltip formatter={(value: number) => new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(value)} />
                       <Legend />
                       <Line type="monotone" dataKey="recaudacion" stroke="#82ca9d" name="Recaudación" >
-                        <LabelList dataKey="recaudacion" position="top" dy={10} formatter={(value: number) => new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(value)} style={{ fontSize: '10px' }} />
+                        <LabelList dataKey="recaudacion" position="top" dy={10} formatter={(value: any) => new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(value)} style={{ fontSize: '10px' }} />
                       </Line>
                     </ComposedChart>
                   </ResponsiveContainer>
