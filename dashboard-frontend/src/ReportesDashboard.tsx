@@ -56,7 +56,7 @@ function ReportesDashboard() {
         filename:     'informe_fin_semana_largo.pdf',
         image:        { type: 'jpeg' as const, quality: 0.98 },
         html2canvas:  { scale: 2 },
-        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' as const }
       };
       html2pdf().from(element).set(opt).save();
     }
