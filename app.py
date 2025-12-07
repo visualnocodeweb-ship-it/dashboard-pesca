@@ -87,8 +87,6 @@ def get_chart_data():
         if df_filtered.empty:
             return jsonify([])
 
-        df_filtered[DATE_COLUMN] = pd.to_datetime(df_filtered[DATE_COLUMN], errors='coerce', dayfirst=True)
-        df_filtered = df_filtered.dropna(subset=[DATE_COLUMN])
         
         daily_counts = df_filtered.groupby(df_filtered[DATE_COLUMN].dt.date).size().reset_index(name='count')
         daily_counts.rename(columns={DATE_COLUMN: 'date'}, inplace=True)
@@ -154,8 +152,6 @@ def get_recaudacion_por_dia():
         if DATE_COLUMN not in df_filtered.columns or RECAUDACION_COLUMN not in df_filtered.columns:
             return jsonify({"error": "Required columns not found."}), 400
 
-        df_filtered[DATE_COLUMN] = pd.to_datetime(df_filtered[DATE_COLUMN], errors='coerce', dayfirst=True)
-        df_filtered = df_filtered.dropna(subset=[DATE_COLUMN])
         df_filtered[RECAUDACION_COLUMN] = pd.to_numeric(df_filtered[RECAUDACION_COLUMN], errors='coerce').fillna(0)
 
         daily_sums = df_filtered.groupby(df_filtered[DATE_COLUMN].dt.date)[RECAUDACION_COLUMN].sum().reset_index()
