@@ -5,8 +5,7 @@
   "functions": {
     "api/app.py": {
       "runtime": "python@3.9",
-      "memory": 1024,
-      "handler": "api/app.app"
+      "memory": 1024
     }
   },
   "routes": [
