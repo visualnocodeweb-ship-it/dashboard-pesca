@@ -7,43 +7,55 @@ import base64
 import tempfile # For creating a temporary file if needed
 
 def get_data_from_sheet(sheet_name, worksheet_name):
-    """
-    Connects to a Google Sheet and returns a worksheet's data as a pandas DataFrame
-    and the worksheet object itself.
-
-    :param sheet_name: The ID of the Google Sheet.
-    :param worksheet_name: The name of the worksheet within the sheet.
-    :return: A tuple containing (pandas.DataFrame, gspread.Worksheet) or (None, None) on error.
-    """
+    print(f"get_data_from_sheet: Intentando obtener datos para sheet_name='{sheet_name}', worksheet_name='{worksheet_name}'")
     try:
         # Define the scope
         scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
 
         # --- Load credentials securely ---
+        print("get_data_from_sheet: Cargando credenciales...")
         credentials_json = None
         if 'GOOGLE_APPLICATION_CREDENTIALS_BASE64' in os.environ:
+            print("get_data_from_sheet: Usando GOOGLE_APPLICATION_CREDENTIALS_BASE64 desde variable de entorno.")
             encoded_credentials = os.environ['GOOGLE_APPLICATION_CREDENTIALS_BASE64']
             decoded_credentials = base64.b64decode(encoded_credentials).decode('utf-8')
             credentials_json = json.loads(decoded_credentials)
             creds = ServiceAccountCredentials.from_json_keyfile_dict(credentials_json, scope)
         elif os.path.exists('credentials.json'):
+            print("get_data_from_sheet: Usando credentials.json desde archivo local.")
             creds = ServiceAccountCredentials.from_json_keyfile_name('credentials.json', scope)
         else:
             print("Error: No Google Sheet credentials found. Neither environment variable nor credentials.json file.")
             return None, None
+        
+        if credentials_json and credentials_json.get('client_email'):
+            print(f"get_data_from_sheet: Client Email de credenciales: {credentials_json.get('client_email')}")
+        elif os.path.exists('credentials.json'):
+            try:
+                with open('credentials.json', 'r') as f:
+                    creds_data = json.load(f)
+                    print(f"get_data_from_sheet: Client Email de credentials.json: {creds_data.get('client_email')}")
+            except Exception as e_creds_read:
+                print(f"get_data_from_sheet: Error al leer client_email de credentials.json: {e_creds_read}")
+
+        print("get_data_from_sheet: Credenciales cargadas. Autorizando gspread...")
         # --- End credential loading ---
 
         # Authorize the clientsheet
         client = gspread.authorize(creds)
+        print("get_data_from_sheet: gspread autorizado. Abriendo hoja de cálculo...")
 
         # Get the instance of the spreadsheet using its key (ID)
         sheet = client.open_by_key(sheet_name)
+        print(f"get_data_from_sheet: Hoja de cálculo '{sheet_name}' abierta. Accediendo a pestaña '{worksheet_name}'...")
 
         # Get the specific worksheet
         worksheet = sheet.worksheet(worksheet_name)
+        print(f"get_data_from_sheet: Pestaña '{worksheet_name}' accedida. Obteniendo todos los registros...")
 
         # Get all the records of the data
         data = worksheet.get_all_records()
+        print(f"get_data_from_sheet: Registros obtenidos. {len(data)} filas.")
 
         # Convert to a DataFrame
         df = pd.DataFrame(data)
@@ -65,7 +77,7 @@ def get_data_from_sheet(sheet_name, worksheet_name):
         print(f"Error: Worksheet '{worksheet_name}' not found in spreadsheet '{sheet_name}'.")
         return None, None
     except Exception as e:
-        print(f"An unexpected error occurred: {e}")
+        print(f"An unexpected error occurred in get_data_from_sheet: {e}")
         return None, None
 
 if __name__ == '__main__':

@@ -1,67 +1,40 @@
-import { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
 import './App.css';
-import PermisosDashboard from './PermisosDashboard';
-import RecaudacionDashboard from './RecaudacionDashboard';
-import CategoriaPescaDashboard from './CategoriaPescaDashboard';
-import RegionesDashboard from './RegionesDashboard';
-import LatestRecordsDashboard from './LatestRecordsDashboard';
-import ReportesDashboard from './ReportesDashboard'; // Import the new component
+import CategoriaPescaDashboard from './components/CategoriaPescaDashboard';
+import LatestRecordsDashboard from './components/LatestRecordsDashboard';
+import PermisosDashboard from './components/PermisosDashboard';
+import RecaudacionDashboard from './components/RecaudacionDashboard';
+import RegionesDashboard from './components/RegionesDashboard';
+import ReportesDashboard from './components/ReportesDashboard';
 
 function App() {
-  const [activeTab, setActiveTab] = useState('permisos');
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Dashboard de Análisis de Pesca</h1>
-        <nav className="main-nav">
-          <button 
-            className={`nav-button ${activeTab === 'permisos' ? 'active' : ''}`}
-            onClick={() => setActiveTab('permisos')}
-          >
-            Cantidad de Permisos
-          </button>
-          <button 
-            className={`nav-button ${activeTab === 'recaudacion' ? 'active' : ''}`}
-            onClick={() => setActiveTab('recaudacion')}
-          >
-            Recaudacion
-          </button>
-          <button 
-            className={`nav-button ${activeTab === 'categoria' ? 'active' : ''}`}
-            onClick={() => setActiveTab('categoria')}
-          >
-            Categoria Pesca
-          </button>
-          <button 
-            className={`nav-button ${activeTab === 'regiones' ? 'active' : ''}`}
-            onClick={() => setActiveTab('regiones')}
-          >
-            Regiones
-          </button>
-          <button
-            className={`nav-button ${activeTab === 'ultimos-registros' ? 'active' : ''}`}
-            onClick={() => setActiveTab('ultimos-registros')}
-          >
-            Últimos Registros
-          </button>
-          <button // New button for Reports
-            className={`nav-button ${activeTab === 'reportes' ? 'active' : ''}`}
-            onClick={() => setActiveTab('reportes')}
-          >
-            Reportes
-          </button>
-        </nav>
-      </header>
-      <main>
-        {activeTab === 'permisos' && <PermisosDashboard />}
-        {activeTab === 'recaudacion' && <RecaudacionDashboard />}
-        {activeTab === 'categoria' && <CategoriaPescaDashboard />}
-        {activeTab === 'regiones' && <RegionesDashboard />}
-        {activeTab === 'ultimos-registros' && <LatestRecordsDashboard />}
-        {activeTab === 'reportes' && <ReportesDashboard />} {/* Render new component */}
-      </main>
-    </div>
+    <Router>
+      <div className="App">
+        <header className="App-header">
+          <h1>Panel de Control de Pesca temporada 2025-2026</h1>
+          <nav className="main-nav">
+            <NavLink to="/permisos" className="nav-button">Permisos</NavLink>
+            <NavLink to="/recaudacion" className="nav-button">Recaudación</NavLink>
+            <NavLink to="/categorias" className="nav-button">Categorías</NavLink>
+            <NavLink to="/regiones" className="nav-button">Regiones</NavLink>
+            <NavLink to="/ultimos-registros" className="nav-button">Últimos Registros</NavLink>
+            <NavLink to="/reportes" className="nav-button">Reportes</NavLink>
+          </nav>
+        </header>
+        <main>
+          <Routes>
+            <Route path="/permisos" element={<PermisosDashboard />} />
+            <Route path="/recaudacion" element={<RecaudacionDashboard />} />
+            <Route path="/categorias" element={<CategoriaPescaDashboard />} />
+            <Route path="/regiones" element={<RegionesDashboard />} />
+            <Route path="/ultimos-registros" element={<LatestRecordsDashboard />} />
+            <Route path="/reportes" element={<ReportesDashboard />} />
+            <Route path="/" element={<PermisosDashboard />} />
+          </Routes>
+        </main>
+      </div>
+    </Router>
   );
 }
 

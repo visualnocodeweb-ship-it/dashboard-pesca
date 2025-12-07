@@ -6,6 +6,8 @@ import time
 import os
 from collections import Counter
 
+import pytz # Import pytz for timezone handling
+
 # --- CONFIGURATION ---
 SHEET_NAME = "1NZZoMBH4tU4l-uTNW4P1zHtpenRLvNDLLLLKlx8YCyk"
 WORKSHEET_NAME = "Listado General"
@@ -14,9 +16,10 @@ PERMIT_START_ROW = 11136
 RECAUDACION_COLUMN = "Ingresosnetos(conformato)"
 PRODUCTO_COLUMN = "nombre_producto"
 CACHE_DURATION_SECONDS = 60
+LOCAL_TIMEZONE = pytz.timezone('America/Argentina/Buenos_Aires') # Assuming Argentinian timezone
 # -------------------
 
-app = Flask(__name__, static_folder='dashboard-frontend/dist', static_url_path='/')
+app = Flask(__name__, static_folder='dashboard-frontend/dist')
 CORS(app)  # This will enable CORS for all routes
 
 # --- Caching Mechanism ---
@@ -31,15 +34,21 @@ def get_cached_dataframe():
     """
     Returns a cached pandas DataFrame, fetching a new one if the cache is stale.
     """
+    print("get_cached_dataframe: Iniciando...")
     current_time = time.time()
     if cache.df is None or (current_time - cache.last_fetched_time) > CACHE_DURATION_SECONDS:
-        print("--- CACHE STALE: Fetching new data from Google Sheets... ---")
+        print("get_cached_dataframe: CACHE STALE o vacío. Intentando obtener nuevos datos de Google Sheets...")
         df, _ = get_data_from_sheet(SHEET_NAME, WORKSHEET_NAME)
+        if df is None:
+            print("get_cached_dataframe: ERROR: No se pudieron obtener datos de Google Sheets.")
+        else:
+            print(f"get_cached_dataframe: Datos obtenidos. Filas: {len(df)}")
         cache.df = df
         cache.last_fetched_time = current_time
-        print("--- CACHE UPDATED ---")
+        print("get_cached_dataframe: CACHE ACTUALIZADO.")
     else:
-        print("--- Using CACHED data ---")
+        print("get_cached_dataframe: Usando datos en CACHE.")
+    print("get_cached_dataframe: Finalizando.")
     return cache.df
 
 def _filter_by_date_range(df: pd.DataFrame, start_date: str = None, end_date: str = None) -> pd.DataFrame:
@@ -51,15 +60,32 @@ def _filter_by_date_range(df: pd.DataFrame, start_date: str = None, end_date: st
         return df
 
     df_copy = df.copy()
-    df_copy[DATE_COLUMN] = pd.to_datetime(df_copy[DATE_COLUMN], errors='coerce', infer_datetime_format=True)
+    # Attempt to parse with DD/MM/YYYY HH:MM:SS format first
+    parsed_dates_dm = pd.to_datetime(df_copy[DATE_COLUMN], format='%d/%m/%Y %H:%M:%S', errors='coerce')
+    # For dates that failed to parse, try YYYY-MM-DD HH:MM:SS format
+    parsed_dates_ym = pd.to_datetime(df_copy[DATE_COLUMN], format='%Y-%m-%d %H:%M:%S', errors='coerce')
+    
+    # Combine the parsed dates, prioritizing the first format
+    df_copy[DATE_COLUMN] = parsed_dates_dm.fillna(parsed_dates_ym)
+    
+    # Localize the timezone-naive DataFrame column to LOCAL_TIMEZONE and then convert to UTC
+    df_copy[DATE_COLUMN] = df_copy[DATE_COLUMN].dt.tz_localize(LOCAL_TIMEZONE, ambiguous='infer', nonexistent='shift_forward').dt.tz_convert(pytz.utc)
+    
     df_copy = df_copy.dropna(subset=[DATE_COLUMN])
 
     if start_date:
         start_ts = pd.to_datetime(start_date, dayfirst=True)
+        # Localize start_ts to LOCAL_TIMEZONE and convert to UTC
+        start_ts = LOCAL_TIMEZONE.localize(start_ts, is_dst=None).astimezone(pytz.utc)
+        print(f"DEBUG: Parsed and UTC converted start_ts: {start_ts}")
         df_copy = df_copy[df_copy[DATE_COLUMN] >= start_ts]
     if end_date:
         end_ts = pd.to_datetime(end_date, dayfirst=True)
-        df_copy = df_copy[df_copy[DATE_COLUMN] <= end_ts + pd.Timedelta(days=1, seconds=-1)]
+        # Localize end_ts to LOCAL_TIMEZONE (end of day) and convert to UTC
+        end_ts_eod = end_ts + pd.Timedelta(days=1) - pd.Timedelta(seconds=1) # End of the day
+        end_ts_eod = LOCAL_TIMEZONE.localize(end_ts_eod, is_dst=None).astimezone(pytz.utc)
+        print(f"DEBUG: Parsed and UTC converted end_ts_eod: {end_ts_eod}")
+        df_copy = df_copy[df_copy[DATE_COLUMN] <= end_ts_eod]
     
     return df_copy
 
