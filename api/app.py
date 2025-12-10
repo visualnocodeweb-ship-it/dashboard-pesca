@@ -1,9 +1,12 @@
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 from flask import Flask, jsonify, send_from_directory, request
 from flask_cors import CORS
 import pandas as pd
 from google_sheets_client import get_data_from_sheet
 import time
-import os
 from collections import Counter
 
 import pytz # Import pytz for timezone handling
