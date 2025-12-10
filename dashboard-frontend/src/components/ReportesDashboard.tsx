@@ -47,15 +47,62 @@ function ReportesDashboard() {
 
   const handleDownloadPdf = () => {
     if (reportRef.current) {
-      const element = reportRef.current;
+      // 1. Clone the report content to avoid modifying the live DOM
+      const contentClone = (reportRef.current as HTMLElement).cloneNode(true) as HTMLElement;
+
+      // 2. Remove the download button from the cloned content
+      const buttonContainer = contentClone.querySelector('[style*="text-align: center"]');
+      if (buttonContainer) {
+        buttonContainer.remove();
+      }
+
+      // 3. Apply styles to avoid page breaks within elements
+      const sectionsToKeepTogether = contentClone.querySelectorAll('.chart-container, .summary-section');
+      sectionsToKeepTogether.forEach(section => {
+        (section as HTMLElement).style.pageBreakInside = 'avoid';
+      });
+      
+      // 4. Create a new container for the final PDF content
+      const elementToPrint = document.createElement('div');
+
+      // 5. Create the header
+      const header = document.createElement('div');
+      header.style.textAlign = 'center';
+      header.style.marginBottom = '20px';
+      header.style.padding = '20px';
+      header.style.borderBottom = '1px solid #eee';
+
+      const logo = document.createElement('img');
+      logo.src = '/Guardafauna - 1.png';
+      logo.style.width = '100px';
+      logo.style.marginBottom = '10px';
+      
+      const title = document.createElement('h2');
+      title.innerText = 'Reporte de Pesca';
+      title.style.margin = '0';
+
+      const dateRange = document.createElement('p');
+      dateRange.innerText = `Período: ${startDate} al ${endDate}`;
+      dateRange.style.margin = '5px 0 0 0';
+      dateRange.style.color = '#555';
+
+      header.appendChild(logo);
+      header.appendChild(title);
+      header.appendChild(dateRange);
+
+      // 6. Append header and modified content to the print container
+      elementToPrint.appendChild(header);
+      elementToPrint.appendChild(contentClone);
+
+      // 7. Set PDF options and save
       const opt = {
         margin: 0.5,
-        filename: `informe_${startDate}_${endDate}.pdf`,
+        filename: `reporte_pesca_${startDate}_a_${endDate}.pdf`,
         image: { type: 'jpeg' as const, quality: 0.98 },
-        html2canvas: { scale: 2 },
+        html2canvas: { scale: 2, useCORS: true },
         jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' as const }
       };
-      html2pdf().from(element).set(opt).save();
+      html2pdf().from(elementToPrint).set(opt).save();
     }
   };
 
@@ -284,7 +331,7 @@ function ReportesDashboard() {
             </div>
 
             <div style={{ textAlign: 'center', marginTop: '30px' }}>
-              <button className="nav-button" onClick={handleDownloadPdf}>
+              <button className="nav-button" onClick={handleDownloadPdf} style={{ color: 'black' }}>
                 Descargar en PDF
               </button>
             </div>

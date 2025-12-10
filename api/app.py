@@ -19,7 +19,7 @@ CACHE_DURATION_SECONDS = 60
 LOCAL_TIMEZONE = pytz.timezone('America/Argentina/Buenos_Aires') # Assuming Argentinian timezone
 # -------------------
 
-app = Flask(__name__, static_folder='dashboard-frontend/dist')
+app = Flask(__name__, static_folder='../dashboard-frontend/dist')
 CORS(app)  # This will enable CORS for all routes
 
 # --- Caching Mechanism ---
