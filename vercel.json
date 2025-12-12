@@ -12,7 +12,7 @@
     }
   ],
   "routes": [
-    { "src": "/api/(.*)", "dest": "/api/app.py" },
+    { "src": "/api/(.*)", "dest": "/api/app" },
     { "handle": "filesystem" },
     { "src": "/(.*)", "dest": "index.html" }
   ]
