@@ -8,11 +8,14 @@
     {
       "src": "dashboard-frontend/package.json",
       "use": "@vercel/static-build",
-      "config": { "distDir": "dist" }
+      "config": {
+        "outputDirectory": "dashboard-frontend/dist",
+        "buildCommand": "npm run build"
+      }
     }
   ],
   "routes": [
-    { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "index.html" }
+    { "src": "/api/(.*)", "dest": "/api/app.py" },
+    { "src": "/(.*)", "dest": "/dashboard-frontend/dist/index.html" }
   ]
 }
