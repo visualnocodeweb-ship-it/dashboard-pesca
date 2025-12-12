@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "outputDirectory": "dashboard-frontend/dist",
+          "outputDirectory": "dist",
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/app.py" },
     { "src": "/(.*)", "dest": "/index.html" }
