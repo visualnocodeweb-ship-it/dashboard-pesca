@@ -101,7 +101,7 @@ def serve(path):
     else:
         return send_from_directory(app.static_folder, 'index.html')
 
-@app.route("/chart-data")
+@app.route("/api/chart-data")
 def get_chart_data():
     start_date = request.args.get('start_date')
     end_date = request.args.get('end_date')
@@ -126,7 +126,7 @@ def get_chart_data():
         print(f"API ERROR in /api/chart-data: {e}")
         return jsonify({"error": "Error processing chart data on the server."}), 500
 
-@app.route("/permit-count")
+@app.route("/api/permit-count")
 def get_permit_count():
     start_date = request.args.get('start_date')
     end_date = request.args.get('end_date')
@@ -141,7 +141,7 @@ def get_permit_count():
         
     return jsonify({"count": permit_count})
 
-@app.route("/total-recaudacion")
+@app.route("/api/total-recaudacion")
 def get_total_recaudacion():
     start_date = request.args.get('start_date')
     end_date = request.args.get('end_date')
@@ -163,7 +163,7 @@ def get_total_recaudacion():
     
     return jsonify({"total": total_recaudacion})
 
-@app.route("/recaudacion-por-dia")
+@app.route("/api/recaudacion-por-dia")
 def get_recaudacion_por_dia():
     start_date = request.args.get('start_date')
     end_date = request.args.get('end_date')
@@ -192,7 +192,7 @@ def get_recaudacion_por_dia():
         print(f"API ERROR in /api/recaudacion-por-dia: {e}")
         return jsonify({"error": "Error processing daily revenue data."}), 500
 
-@app.route("/categoria-pesca")
+@app.route("/api/categoria-pesca")
 def get_categoria_pesca():
     start_date = request.args.get('start_date')
     end_date = request.args.get('end_date')
@@ -218,7 +218,7 @@ def get_categoria_pesca():
         print(f"API ERROR in /api/categoria-pesca: {e}")
         return jsonify({"error": "Error processing product category data."}), 500
 
-@app.route("/regiones-count")
+@app.route("/api/regiones-count")
 def get_regiones_count():
     start_date = request.args.get('start_date')
     end_date = request.args.get('end_date')
@@ -253,7 +253,7 @@ def get_regiones_count():
         print(f"API ERROR in /api/regiones-count: {e}")
         return jsonify({"error": "Error processing regions data."}), 500
 
-@app.route("/latest-records")
+@app.route("/api/latest-records")
 def get_latest_records():
     try:
         df = get_cached_dataframe()
@@ -278,7 +278,7 @@ def get_latest_records():
         print(f"API ERROR in /api/latest-records: {e}")
         return jsonify({"error": "Error retrieving latest records."}), 500
 
-@app.route("/debug-data")
+@app.route("/api/debug-data")
 def debug_data_endpoint():
     try:
         df = get_cached_dataframe()
