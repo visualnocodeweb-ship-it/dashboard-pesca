@@ -18,7 +18,13 @@ function LatestRecordsDashboard() {
     const fetchRecords = () => {
       axios.get('/api/latest-records')
         .then(response => {
-          setRecords(response.data);
+          // Defensive check: ensure the response is an array before setting state
+          if (Array.isArray(response.data)) {
+            setRecords(response.data);
+          } else {
+            console.error("Received non-array response for latest records:", response.data);
+            setError("El formato de los últimos registros es incorrecto.");
+          }
           setLoading(false);
         })
         .catch(err => {

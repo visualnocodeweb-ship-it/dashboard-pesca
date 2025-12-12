@@ -17,7 +17,12 @@ function RegionesDashboard() {
     const fetchData = () => {
       axios.get('/api/regiones-count')
         .then(response => {
-          setChartData(response.data);
+          if (Array.isArray(response.data)) {
+            setChartData(response.data);
+          } else {
+            console.error("Received non-array response for regions data:", response.data);
+            setError("El formato de los datos de las regiones es incorrecto.");
+          }
           setLoading(false);
         })
         .catch(error => {

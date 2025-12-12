@@ -59,7 +59,12 @@ function PermisosDashboard() {
       };
       axios.get('/api/chart-data', { params })
         .then(response => {
-          setChartData(response.data);
+          if (Array.isArray(response.data)) {
+            setChartData(response.data);
+          } else {
+            console.error("Received non-array response for chart data:", response.data);
+            setChartError("El formato de los datos del gráfico es incorrecto.");
+          }
           setChartLoading(false);
         })
         .catch(error => {
