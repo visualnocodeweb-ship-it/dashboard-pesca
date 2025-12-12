@@ -136,7 +136,7 @@ dmypy.json
 cython_debug/
 
 # Sensitive files
-api/credentials.json
+credentials.json
 
 # Vercel and IDE
 .vercel/
