@@ -1,7 +1,6 @@
 {
   "version": 2,
   "outputDirectory": "dashboard-frontend/dist",
-  "cleanUrls": true,
   "builds": [
     {
       "src": "dashboard-frontend/package.json",
