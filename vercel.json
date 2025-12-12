@@ -2,10 +2,6 @@
   "version": 2,
   "outputDirectory": "dashboard-frontend/dist",
   "cleanUrls": true,
-  "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/app.py" },
-    { "source": "/(.*)", "destination": "/index.html" }
-  ],
   "builds": [
     {
       "src": "dashboard-frontend/package.json",
@@ -18,5 +14,8 @@
       "src": "api/app.py",
       "use": "@vercel/python"
     }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api/app.py" }
   ]
 }
