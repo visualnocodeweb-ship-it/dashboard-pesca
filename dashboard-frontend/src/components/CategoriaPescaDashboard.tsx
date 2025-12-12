@@ -17,12 +17,7 @@ function CategoriaPescaDashboard() {
     const fetchData = () => {
       axios.get('/api/categoria-pesca')
         .then(response => {
-          if (Array.isArray(response.data)) {
-            setChartData(response.data);
-          } else {
-            console.error("Received non-array response for category data:", response.data);
-            setError("El formato de los datos de las categorías es incorrecto.");
-          }
+          setChartData(response.data);
           setLoading(false);
         })
         .catch(error => {

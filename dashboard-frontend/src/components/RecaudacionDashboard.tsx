@@ -46,13 +46,7 @@ function RecaudacionDashboard() {
     const fetchChartData = () => {
       axios.get('/api/recaudacion-por-dia')
         .then(response => {
-          if (Array.isArray(response.data)) {
-            setChartData(response.data);
-          } else {
-            // If the backend returns an error object instead of an array
-            console.error("Received non-array response for chart data:", response.data);
-            setChartError("El formato de los datos recibidos es incorrecto.");
-          }
+          setChartData(response.data);
           setChartLoading(false);
         })
         .catch(error => {

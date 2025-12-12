@@ -114,48 +114,41 @@ function ReportesDashboard() {
         const start_date_formatted = new Date(startDate).toLocaleDateString('es-AR', { timeZone: 'UTC' });
         const end_date_formatted = new Date(endDate).toLocaleDateString('es-AR', { timeZone: 'UTC' });
 
-        const params = { start_date: start_date_formatted, end_date: end_date_formatted };
-
         // Fetch permits count per day
-        const permitsRes = await axios.get('/api/chart-data', { params });
-        if (Array.isArray(permitsRes.data)) {
-          setPermitsData(permitsRes.data);
-        } else {
-          console.error("Received non-array for permits per day");
-          // Optionally set an error for this specific chart
-        }
+        const permitsRes = await axios.get('/api/chart-data', {
+          params: { start_date: start_date_formatted, end_date: end_date_formatted }
+        });
+        setPermitsData(permitsRes.data);
 
         // Fetch revenue per day
-        const revenueRes = await axios.get('/api/recaudacion-por-dia', { params });
-        if (Array.isArray(revenueRes.data)) {
-          setRevenueData(revenueRes.data);
-        } else {
-          console.error("Received non-array for revenue per day");
-        }
+        const revenueRes = await axios.get('/api/recaudacion-por-dia', {
+          params: { start_date: start_date_formatted, end_date: end_date_formatted }
+        });
+        setRevenueData(revenueRes.data);
 
         // Fetch category quantity
-        const categoryRes = await axios.get('/api/categoria-pesca', { params });
-        if (Array.isArray(categoryRes.data)) {
-          setCategoryData(categoryRes.data);
-        } else {
-          console.error("Received non-array for category data");
-        }
+        const categoryRes = await axios.get('/api/categoria-pesca', {
+          params: { start_date: start_date_formatted, end_date: end_date_formatted }
+        });
+        setCategoryData(categoryRes.data);
 
         // Fetch regions quantity
-        const regionRes = await axios.get('/api/regiones-count', { params });
-        if (Array.isArray(regionRes.data)) {
-          setRegionData(regionRes.data);
-        } else {
-          console.error("Received non-array for regions data");
-        }
+        const regionRes = await axios.get('/api/regiones-count', {
+          params: { start_date: start_date_formatted, end_date: end_date_formatted }
+        });
+        setRegionData(regionRes.data);
 
         // Fetch total permits for the period
-        const totalPermitsRes = await axios.get('/api/permit-count', { params });
-        setTotalPermits(totalPermitsRes.data.count ?? 0);
+        const totalPermitsRes = await axios.get('/api/permit-count', {
+          params: { start_date: start_date_formatted, end_date: end_date_formatted }
+        });
+        setTotalPermits(totalPermitsRes.data.count);
 
         // Fetch total recaudacion for the period
-        const totalRecaudacionRes = await axios.get('/api/total-recaudacion', { params });
-        setTotalRecaudacion(totalRecaudacionRes.data.total ?? 0);
+        const totalRecaudacionRes = await axios.get('/api/total-recaudacion', {
+          params: { start_date: start_date_formatted, end_date: end_date_formatted }
+        });
+        setTotalRecaudacion(totalRecaudacionRes.data.total);
 
       } catch (err) {
         console.error("Error fetching report data:", err);
