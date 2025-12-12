@@ -15,7 +15,7 @@ function RegionesDashboard() {
 
   useEffect(() => {
     const fetchData = () => {
-      axios.get('/api/regiones-count')
+      axios.get('/api/app/regiones-count')
         .then(response => {
           if (Array.isArray(response.data)) {
             setChartData(response.data);
