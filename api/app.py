@@ -22,7 +22,7 @@ CACHE_DURATION_SECONDS = 60
 LOCAL_TIMEZONE = pytz.timezone('America/Argentina/Buenos_Aires') # Assuming Argentinian timezone
 # -------------------
 
-app = Flask(__name__, static_folder='../dashboard-frontend/dist')
+app = Flask(__name__)
 CORS(app)  # This will enable CORS for all routes
 
 # --- Caching Mechanism ---
@@ -92,14 +92,7 @@ def _filter_by_date_range(df: pd.DataFrame, start_date: str = None, end_date: st
     
     return df_copy
 
-# Serve React App
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def serve(path):
-    if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
-        return send_from_directory(app.static_folder, path)
-    else:
-        return send_from_directory(app.static_folder, 'index.html')
+
 
 @app.route("/api/app/chart-data")
 def get_chart_data():
