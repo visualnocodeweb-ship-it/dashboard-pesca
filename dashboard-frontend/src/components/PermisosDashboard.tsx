@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { format } from 'date-fns';
+// import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+// import { format } from 'date-fns';
 
 // Interface for the daily chart data
 interface DailyData {
@@ -14,7 +14,11 @@ const FIXED_START_DATE = '15/10/2025'; // October 15, 2025
 function PermisosDashboard() {
   // Function to get the current date formatted for API calls (DD/MM/YYYY)
   const getCurrentFormattedDate = () => {
-    return format(new Date(), 'dd/MM/yyyy');
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+    const yyyy = today.getFullYear();
+    return `${dd}/${mm}/${yyyy}`;
   };
 
   // State for the total permit counter
@@ -86,7 +90,8 @@ function PermisosDashboard() {
         <h2>Cantidad Total de Permisos</h2>
         {countLoading ? <p>Cargando...</p> : countError ? <p className="error">{countError}</p> :
           <div className="counter-value">
-            {new Intl.NumberFormat('es-ES').format(permitCount)}
+            {/* Removed Intl.NumberFormat for extreme compatibility */}
+            {permitCount} {/* Display raw count */}
           </div>
         }
       </div>
@@ -94,17 +99,10 @@ function PermisosDashboard() {
       <div className="chart-container">
         <h2>Permisos por Día</h2>
         {chartLoading ? <p>Cargando gráfico...</p> : chartError ? <p className="error">{chartError}</p> :
-          <ResponsiveContainer width="100%" height={300}>
-            <ComposedChart data={chartData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" tick={false} axisLine={false} />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="count" fill="#2C3E50" fillOpacity={0.95} name="Permisos" />
-              <Line type="monotone" dataKey="count" stroke="#d9006c" strokeOpacity={0.8} name="Línea" strokeWidth={2} />
-            </ComposedChart>
-          </ResponsiveContainer>
+          <div>
+            <p>Datos del gráfico cargados: {chartData.length} elementos.</p>
+            {/* Removed all Recharts components */}
+          </div>
         }
       </div>
     </div>
