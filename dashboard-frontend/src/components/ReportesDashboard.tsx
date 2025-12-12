@@ -117,7 +117,7 @@ function ReportesDashboard() {
         const params = { start_date: start_date_formatted, end_date: end_date_formatted };
 
         // Fetch permits count per day
-        const permitsRes = await axios.get('/api/app/chart-data', { params });
+        const permitsRes = await axios.get('/api/chart-data', { params });
         if (Array.isArray(permitsRes.data)) {
           setPermitsData(permitsRes.data);
         } else {
@@ -126,7 +126,7 @@ function ReportesDashboard() {
         }
 
         // Fetch revenue per day
-        const revenueRes = await axios.get('/api/app/recaudacion-por-dia', { params });
+        const revenueRes = await axios.get('/api/recaudacion-por-dia', { params });
         if (Array.isArray(revenueRes.data)) {
           setRevenueData(revenueRes.data);
         } else {
@@ -134,7 +134,7 @@ function ReportesDashboard() {
         }
 
         // Fetch category quantity
-        const categoryRes = await axios.get('/api/app/categoria-pesca', { params });
+        const categoryRes = await axios.get('/api/categoria-pesca', { params });
         if (Array.isArray(categoryRes.data)) {
           setCategoryData(categoryRes.data);
         } else {
@@ -142,7 +142,7 @@ function ReportesDashboard() {
         }
 
         // Fetch regions quantity
-        const regionRes = await axios.get('/api/app/regiones-count', { params });
+        const regionRes = await axios.get('/api/regiones-count', { params });
         if (Array.isArray(regionRes.data)) {
           setRegionData(regionRes.data);
         } else {
@@ -150,15 +150,11 @@ function ReportesDashboard() {
         }
 
         // Fetch total permits for the period
-        const totalPermitsRes = await axios.get('/api/app/permit-count', {
-          params: { start_date: start_date_formatted, end_date: end_date_formatted }
-        });
+        const totalPermitsRes = await axios.get('/api/permit-count', { params });
         setTotalPermits(totalPermitsRes.data.count ?? 0);
 
         // Fetch total recaudacion for the period
-        const totalRecaudacionRes = await axios.get('/api/app/total-recaudacion', {
-          params: { start_date: start_date_formatted, end_date: end_date_formatted }
-        });
+        const totalRecaudacionRes = await axios.get('/api/total-recaudacion', { params });
         setTotalRecaudacion(totalRecaudacionRes.data.total ?? 0);
 
       } catch (err) {

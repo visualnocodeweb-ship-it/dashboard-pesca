@@ -34,7 +34,7 @@ function PermisosDashboard() {
         start_date: FIXED_START_DATE,
         end_date: getCurrentFormattedDate(),
       };
-      axios.get('/api/app/permit-count', { params })
+      axios.get('/api/permit-count', { params })
         .then(response => {
           setPermitCount(response.data.count);
           setCountLoading(false);
@@ -57,7 +57,7 @@ function PermisosDashboard() {
         start_date: FIXED_START_DATE,
         end_date: getCurrentFormattedDate(),
       };
-      axios.get('/api/app/chart-data', { params })
+      axios.get('/api/chart-data', { params })
         .then(response => {
           if (Array.isArray(response.data)) {
             setChartData(response.data);

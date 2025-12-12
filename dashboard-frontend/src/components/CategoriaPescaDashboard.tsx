@@ -15,7 +15,7 @@ function CategoriaPescaDashboard() {
 
   useEffect(() => {
     const fetchData = () => {
-      axios.get('/api/app/categoria-pesca')
+      axios.get('/api/categoria-pesca')
         .then(response => {
           if (Array.isArray(response.data)) {
             setChartData(response.data);

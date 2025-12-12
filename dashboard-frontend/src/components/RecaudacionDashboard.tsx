@@ -25,7 +25,7 @@ function RecaudacionDashboard() {
   // Effect for fetching the total
   useEffect(() => {
     const fetchTotal = () => {
-      axios.get('/api/app/total-recaudacion')
+      axios.get('/api/total-recaudacion')
         .then(response => {
           setTotal(response.data.total);
           setTotalLoading(false);
@@ -44,7 +44,7 @@ function RecaudacionDashboard() {
   // Effect for fetching the daily chart data
   useEffect(() => {
     const fetchChartData = () => {
-      axios.get('/api/app/recaudacion-por-dia')
+      axios.get('/api/recaudacion-por-dia')
         .then(response => {
           if (Array.isArray(response.data)) {
             setChartData(response.data);

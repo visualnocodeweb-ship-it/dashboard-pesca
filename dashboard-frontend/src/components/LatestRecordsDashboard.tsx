@@ -16,7 +16,7 @@ function LatestRecordsDashboard() {
 
   useEffect(() => {
     const fetchRecords = () => {
-      axios.get('/api/app/latest-records')
+      axios.get('/api/latest-records')
         .then(response => {
           // Defensive check: ensure the response is an array before setting state
           if (Array.isArray(response.data)) {
