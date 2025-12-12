@@ -7,24 +7,12 @@
     },
     {
       "src": "dashboard-frontend/package.json",
-      "use": "@vercel/node",
-      "config": {
-        "maxLambdaSize": "30mb",
-        "zeroConfig": true
-      }
+      "use": "@vercel/static-build",
+      "config": { "distDir": "dist" }
     }
   ],
   "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "api/app.py"
-    },
-    {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/dashboard-frontend/"
-    }
+    { "src": "/api/(.*)", "dest": "api/app.py" },
+    { "src": "/(.*)", "dest": "index.html" }
   ]
 }
