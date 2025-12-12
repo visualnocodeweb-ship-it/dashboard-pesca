@@ -2,6 +2,13 @@
   "version": 2,
   "builds": [
     {
+      "src": "dashboard-frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "buildCommand": "npm run build"
+      }
+    },
+    {
       "src": "api/app.py",
       "use": "@vercel/python"
     }
@@ -9,7 +16,19 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "api/app.py"
+      "dest": "/api"
+    },
+    {
+      "src": "/favicon.ico",
+      "dest": "dashboard-frontend/dist/favicon.ico"
+    },
+    {
+      "src": "/assets/(.*)",
+      "dest": "dashboard-frontend/dist/assets/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "dashboard-frontend/dist/index.html"
     }
   ]
 }
