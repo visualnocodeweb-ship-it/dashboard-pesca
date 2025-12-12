@@ -13,7 +13,7 @@ function TestApi() {
         setData(`Conteo de Permisos: ${response.data.count}`);
         console.log('API call successful. Data:', response.data);
       } catch (err) {
-        console.error('API call failed:', err); // Log full error object
+        console.error('API call failed:', err);
         setError('Error al cargar datos de la API.');
       } finally {
         setLoading(false);
