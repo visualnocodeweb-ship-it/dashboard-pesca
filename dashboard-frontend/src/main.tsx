@@ -1,10 +1,17 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom'; // Importar BrowserRouter
+import axios from 'axios'; // Importar axios
 import './index.css'
 import App from './App.tsx'
 
+// Configuración global de Axios para el backend
+axios.defaults.baseURL = 'http://localhost:5001';
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </StrictMode>,
 )
