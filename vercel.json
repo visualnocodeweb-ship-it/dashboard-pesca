@@ -1,16 +1,16 @@
 {
   "version": 2,
-  "outputDirectory": "dashboard-frontend/dist",
   "cleanUrls": true,
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/app.py" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/(.*)", "destination": "/dashboard-frontend/dist/index.html" }
   ],
   "builds": [
     {
       "src": "dashboard-frontend/package.json",
       "use": "@vercel/static-build",
       "config": {
+        "distDir": "dashboard-frontend/dist",
         "buildCommand": "npm run build"
       }
     },
