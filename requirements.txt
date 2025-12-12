@@ -3,4 +3,3 @@ oauth2client
 pandas
 flask
 flask-cors
-pytz

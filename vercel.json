@@ -1,30 +1,9 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "api/app.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "dashboard-frontend/package.json",
-      "use": "@vercel/node",
-      "config": {
-        "maxLambdaSize": "30mb",
-        "zeroConfig": true
-      }
-    }
-  ],
+  "buildCommand": "pip install -r requirements.txt && npm install --prefix dashboard-frontend && npm run build --prefix dashboard-frontend && mkdir -p .vercel_output/static && cp -R dashboard-frontend/dist/. ./.vercel_output/static/",
+  "outputDirectory": ".vercel_output/static",
   "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "api/app.py"
-    },
-    {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/dashboard-frontend/"
-    }
+    { "src": "/api/(.*)", "dest": "api/app.py" },
+    { "src": "/(.*)", "dest": "/.vercel_output/static/$1" }
   ]
 }
