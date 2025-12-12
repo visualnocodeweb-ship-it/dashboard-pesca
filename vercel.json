@@ -1,21 +1,27 @@
 {
   "version": 2,
-          "outputDirectory": "dist",
-  "routes": [
-    { "src": "/api/(.*)", "dest": "/api/app.py" },
-    { "src": "/(.*)", "dest": "/index.html" }
-  ],
   "builds": [
     {
       "src": "dashboard-frontend/package.json",
       "use": "@vercel/static-build",
       "config": {
-        "buildCommand": "npm run build"
+        "buildCommand": "npm run build",
+        "outputDirectory": "dist"
       }
     },
     {
       "src": "api/app.py",
       "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "api/app.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "dashboard-frontend/dist/$1"
     }
   ]
 }
