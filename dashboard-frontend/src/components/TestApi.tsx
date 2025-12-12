@@ -9,7 +9,7 @@ function TestApi() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('/api/app/permit-count');
+        const response = await axios.get('/api/app/permit-count', { timeout: 10000 }); // 10 seconds timeout
         setData(`Conteo de Permisos: ${response.data.count}`);
         console.log('API call successful. Data:', response.data);
       } catch (err) {
