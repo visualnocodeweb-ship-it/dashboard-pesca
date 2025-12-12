@@ -1,19 +1,8 @@
 {
   "version": 2,
   "outputDirectory": "dashboard-frontend/dist",
-  "builds": [
-    {
-      "src": "dashboard-frontend/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "buildCommand": "npm run build"
-      }
-    },
-    {
-      "src": "api/app.py",
-      "use": "@vercel/python"
-    }
-  ],
+  "installCommand": "npm --prefix ./dashboard-frontend install",
+  "buildCommand": "npm --prefix ./dashboard-frontend run build",
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/app.py" }
   ]
