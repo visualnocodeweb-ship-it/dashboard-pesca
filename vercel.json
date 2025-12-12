@@ -20,8 +20,16 @@
       "dest": "api/app.py"
     },
     {
+      "src": "/favicon.ico",
+      "dest": "dashboard-frontend/dist/favicon.ico"
+    },
+    {
+      "src": "/assets/(.*)",
+      "dest": "dashboard-frontend/dist/assets/$1"
+    },
+    {
       "src": "/(.*)",
-      "dest": "dashboard-frontend/dist/$1"
+      "dest": "dashboard-frontend/dist/index.html"
     }
   ]
 }
