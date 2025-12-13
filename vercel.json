@@ -9,14 +9,14 @@
       }
     },
     {
-      "src": "api/app.py",
+      "src": "api/index.py", # Apuntamos al nuevo archivo,
       "use": "@vercel/python"
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/api"
+      "dest": "api/index" # Apuntamos a la función "index" dentro de "api"
     },
     {
       "src": "/favicon.ico",
