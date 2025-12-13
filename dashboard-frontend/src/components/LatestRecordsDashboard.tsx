@@ -34,12 +34,45 @@ function LatestRecordsDashboard() {
   }, []);
 
   // Helper function to format date strings to local timezone
-  const formatLocalTime = (utcDateString: string) => {
-    // Assuming the date string from backend is ISO 8601 UTC (e.g., '2025-12-07T03:22:56Z')
-    // Get user's local timezone
-    const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    // Format the date to local timezone
-    return formatInTimeZone(new Date(utcDateString), userTimeZone, 'dd/MM/yyyy HH:mm:ss');
+  const formatLocalTime = (dateString: string) => {
+    if (!dateString || typeof dateString !== 'string') {
+      return dateString; // Return original value if not a processable string
+    }
+    
+    // Attempt to parse a "dd/mm/yyyy hh:mm:ss" string
+    const parts = dateString.match(/(\d{2})\/(\d{2})\/(\d{4})[ ,]+(\d{2}):(\d{2}):(\d{2})/);
+    let dateObj: Date;
+
+    if (parts) {
+      // new Date(year, monthIndex, day, hour, minute, second)
+      // Note: month is 0-indexed in JavaScript (0-11)
+      dateObj = new Date(parseInt(parts[3]), parseInt(parts[2]) - 1, parseInt(parts[1]), parseInt(parts[4]), parseInt(parts[5]), parseInt(parts[6]));
+    } else {
+      // Fallback for other formats like ISO strings that JS might handle
+      dateObj = new Date(dateString);
+    }
+    
+    // Check if the created date is valid
+    if (isNaN(dateObj.getTime())) {
+      return dateString; // Return original string if date is invalid
+    }
+
+    try {
+      // Since the source timezone is ambiguous, we'll format it assuming it's local time
+      // This is primarily for display consistency. The actual timezone conversion logic
+      // is more reliably handled on the backend as done in other components.
+      return new Intl.DateTimeFormat('es-AR', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      }).format(dateObj);
+    } catch (e) {
+      console.error("Error formatting date:", e);
+      return dateString; // Return original string on formatting error
+    }
   };
 
   if (loading) return <p>Cargando últimos registros...</p>;
