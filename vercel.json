@@ -8,7 +8,9 @@
     {
       "src": "dashboard-frontend/package.json",
       "use": "@vercel/static-build",
-      "config": { "distDir": "dist" }
+      "config": {
+        "distDir": "dist"
+      }
     }
   ],
   "rewrites": [
@@ -17,7 +19,7 @@
       "destination": "/api/index.py"
     },
     {
-      "source": "/(.*)",
+      "source": "/((?!api/|_next/|assets/|static/).*)",
       "destination": "/index.html"
     }
   ]
