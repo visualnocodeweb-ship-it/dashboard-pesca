@@ -27,6 +27,23 @@ const LoginPage = () => {
     setLoading(false);
   };
 
+  const handleGoogleSignIn = async () => {
+    setLoading(true);
+    setError(null);
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: window.location.origin + '/', // Redirect to the current origin after Google login
+      },
+    });
+
+    if (error) {
+      setError(error.message);
+    }
+    setLoading(false);
+    // Supabase will handle the redirect, so no explicit navigation here
+  };
+
   return (
     <div className="auth-container">
       <h2>Iniciar Sesión</h2>
@@ -59,6 +76,14 @@ const LoginPage = () => {
           {loading ? 'Cargando...' : 'Iniciar Sesión'}
         </button>
       </form>
+
+      <div className="social-auth-options">
+        <p>O inicia sesión con:</p>
+        <button className="google-signin-button" onClick={handleGoogleSignIn} disabled={loading}>
+          Google
+        </button>
+      </div>
+
       <p className="auth-switch">
         ¿No tienes una cuenta? <Link to="/register">Regístrate</Link>
       </p>

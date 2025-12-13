@@ -405,3 +405,46 @@ main {
 .logout-button:hover {
   background-color: #e66200;
 }
+
+/* Social Auth Options */
+.social-auth-options {
+  margin-top: 25px;
+  text-align: center;
+}
+
+.social-auth-options p {
+  margin-bottom: 15px;
+  color: #555;
+  font-size: 0.95em;
+}
+
+.google-signin-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px;
+  background-color: #DB4437; /* Google red */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.google-signin-button:hover {
+  background-color: #C0392B; /* Darker Google red */
+}
+
+.google-signin-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.google-signin-button img {
+  width: 24px;
+  height: 24px;
+}
