@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import apiClient from '../api/axios';
 
 import { formatInTimeZone } from 'date-fns-tz';
 
@@ -16,7 +16,7 @@ function LatestRecordsDashboard() {
 
   useEffect(() => {
     const fetchRecords = () => {
-      axios.get('/api/latest-records')
+      apiClient.get('/api/latest-records')
         .then(response => {
           setRecords(response.data);
           setLoading(false);

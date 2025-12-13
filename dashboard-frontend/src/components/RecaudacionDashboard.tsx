@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import apiClient from '../api/axios';
 import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 // Interface for the daily revenue chart data
@@ -25,7 +25,7 @@ function RecaudacionDashboard() {
   // Effect for fetching the total
   useEffect(() => {
     const fetchTotal = () => {
-      axios.get('/api/total-recaudacion')
+      apiClient.get('/api/total-recaudacion')
         .then(response => {
           setTotal(response.data.total);
           setTotalLoading(false);
@@ -44,7 +44,7 @@ function RecaudacionDashboard() {
   // Effect for fetching the daily chart data
   useEffect(() => {
     const fetchChartData = () => {
-      axios.get('/api/recaudacion-por-dia')
+      apiClient.get('/api/recaudacion-por-dia')
         .then(response => {
           setChartData(response.data);
           setChartLoading(false);

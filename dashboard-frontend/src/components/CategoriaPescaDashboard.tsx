@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import apiClient from '../api/axios';
 import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 // Interface for the category chart data
@@ -15,7 +15,7 @@ function CategoriaPescaDashboard() {
 
   useEffect(() => {
     const fetchData = () => {
-      axios.get('/api/categoria-pesca')
+      apiClient.get('/api/categoria-pesca')
         .then(response => {
           setChartData(response.data);
           setLoading(false);

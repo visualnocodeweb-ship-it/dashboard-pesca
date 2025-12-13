@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
+import apiClient from '../api/axios';
 import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LabelList } from 'recharts';
 import html2pdf from 'html2pdf.js';
 
@@ -115,37 +115,37 @@ function ReportesDashboard() {
         const end_date_formatted = new Date(endDate).toLocaleDateString('es-AR', { timeZone: 'UTC' });
 
         // Fetch permits count per day
-        const permitsRes = await axios.get('/api/chart-data', {
+        const permitsRes = await apiClient.get('/api/chart-data', {
           params: { start_date: start_date_formatted, end_date: end_date_formatted }
         });
         setPermitsData(permitsRes.data);
 
         // Fetch revenue per day
-        const revenueRes = await axios.get('/api/recaudacion-por-dia', {
+        const revenueRes = await apiClient.get('/api/recaudacion-por-dia', {
           params: { start_date: start_date_formatted, end_date: end_date_formatted }
         });
         setRevenueData(revenueRes.data);
 
         // Fetch category quantity
-        const categoryRes = await axios.get('/api/categoria-pesca', {
+        const categoryRes = await apiClient.get('/api/categoria-pesca', {
           params: { start_date: start_date_formatted, end_date: end_date_formatted }
         });
         setCategoryData(categoryRes.data);
 
         // Fetch regions quantity
-        const regionRes = await axios.get('/api/regiones-count', {
+        const regionRes = await apiClient.get('/api/regiones-count', {
           params: { start_date: start_date_formatted, end_date: end_date_formatted }
         });
         setRegionData(regionRes.data);
 
         // Fetch total permits for the period
-        const totalPermitsRes = await axios.get('/api/permit-count', {
+        const totalPermitsRes = await apiClient.get('/api/permit-count', {
           params: { start_date: start_date_formatted, end_date: end_date_formatted }
         });
         setTotalPermits(totalPermitsRes.data.count);
 
         // Fetch total recaudacion for the period
-        const totalRecaudacionRes = await axios.get('/api/total-recaudacion', {
+        const totalRecaudacionRes = await apiClient.get('/api/total-recaudacion', {
           params: { start_date: start_date_formatted, end_date: end_date_formatted }
         });
         setTotalRecaudacion(totalRecaudacionRes.data.total);

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import apiClient from '../api/axios';
 import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 // Interface for the region chart data
@@ -15,7 +15,7 @@ function RegionesDashboard() {
 
   useEffect(() => {
     const fetchData = () => {
-      axios.get('/api/regiones-count')
+      apiClient.get('/api/regiones-count')
         .then(response => {
           setChartData(response.data);
           setLoading(false);

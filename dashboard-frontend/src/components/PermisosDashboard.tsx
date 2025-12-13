@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import apiClient from '../api/axios';
 import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { format } from 'date-fns';
 
@@ -34,7 +34,7 @@ function PermisosDashboard() {
         start_date: FIXED_START_DATE,
         end_date: getCurrentFormattedDate(),
       };
-      axios.get('/api/permit-count', { params })
+      apiClient.get('/api/permit-count', { params })
         .then(response => {
           setPermitCount(response.data.count);
           setCountLoading(false);
@@ -57,7 +57,7 @@ function PermisosDashboard() {
         start_date: FIXED_START_DATE,
         end_date: getCurrentFormattedDate(),
       };
-      axios.get('/api/chart-data', { params })
+      apiClient.get('/api/chart-data', { params })
         .then(response => {
           setChartData(response.data);
           setChartLoading(false);
