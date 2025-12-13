@@ -35,9 +35,9 @@ def get_data_from_sheet(sheet_name, worksheet_name):
         
         if credentials_json and credentials_json.get('client_email'):
             print(f"get_data_from_sheet: Client Email de credenciales: {credentials_json.get('client_email')}")
-        elif os.path.exists('../credentials.json'):
+        elif os.path.exists('credentials.json'):
             try:
-                with open('../credentials.json', 'r') as f:
+                with open('credentials.json', 'r') as f:
                     creds_data = json.load(f)
                     print(f"get_data_from_sheet: Client Email de credentials.json: {creds_data.get('client_email')}")
             except Exception as e_creds_read:
@@ -73,8 +73,8 @@ def get_data_from_sheet(sheet_name, worksheet_name):
         print("Please make sure you have shared the sheet with the client email:")
         if credentials_json:
             print(credentials_json.get('client_email'))
-        elif os.path.exists('../credentials.json'):
-            with open('../credentials.json', 'r') as f:
+        elif os.path.exists('credentials.json'):
+            with open('credentials.json', 'r') as f:
                 creds_data = json.load(f)
                 print(creds_data.get('client_email'))
         return None, None
