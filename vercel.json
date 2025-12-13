@@ -14,17 +14,10 @@
     }
   ],
   "routes": [
+    { "handle": "filesystem" },
     {
       "src": "/api/(.*)",
       "dest": "/api/index.py"
-    },
-    {
-      "src": "/favicon.ico",
-      "dest": "/favicon.ico"
-    },
-    {
-      "src": "/assets/(.*)",
-      "dest": "/assets/$1"
     },
     {
       "src": "/(.*)",
