@@ -16,7 +16,7 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "api/index" # Apuntamos a la función "index" dentro de "api"
+      "dest": "api/index.py" # Apuntamos a la función "index" dentro de "api"
     },
     {
       "src": "/favicon.ico",
