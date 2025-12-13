@@ -424,18 +424,19 @@ main {
   gap: 10px;
   width: 100%;
   padding: 12px;
-  background-color: #DB4437; /* Google red */
-  color: white;
-  border: none;
+  background-color: #ffffff;
+  color: #444; /* Dark grey text */
+  border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 1.1em;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .google-signin-button:hover {
-  background-color: #C0392B; /* Darker Google red */
+  background-color: #f7f7f7;
+  border-color: #aaa;
 }
 
 .google-signin-button:disabled {
@@ -452,4 +453,15 @@ main {
   display: block;
   margin: 0 auto 20px auto;
   width: 100px;
+}
+
+.header-title-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.header-logo {
+    width: 50px;
+    height: auto;
 }
