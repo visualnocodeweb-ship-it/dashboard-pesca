@@ -46,8 +46,9 @@ const LoginPage = () => {
 
   return (
     <div className="auth-container">
+      <img src="/Guardafauna - 1.png" alt="Logo" className="auth-logo" />
       <h2>Iniciar Sesión</h2>
-      <p>Ingresa para acceder al dashboard.</p>
+      <p>Ingresa para acceder al Dashboard de Pesca Fauna</p>
       {error && <p className="error-message">{error}</p>}
       <form onSubmit={handleLogin}>
         <div className="input-group">

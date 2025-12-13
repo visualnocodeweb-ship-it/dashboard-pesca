@@ -16,27 +16,38 @@ body {
 }
 
 .App-header {
-  background: linear-gradient(90deg, #00BFA5 0%, #00a896 100%); /* Changed to user's primary color */
-  padding: 25px 40px;
+  background: linear-gradient(90deg, #00BFA5 0%, #00a896 100%);
+  padding: 15px 40px;
   color: white;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   margin-bottom: 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
 .App-header h1 {
   margin: 0;
-  font-size: 2.2em;
+  font-size: 1.8em;
   font-weight: 600;
   color: #263238;
   text-shadow: 0 1px 3px rgba(255, 255, 255, 0.3);
+  flex-shrink: 0;
 }
 
 .main-nav {
   display: flex;
   gap: 10px;
+}
+
+.header-right-side {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  margin-left: auto; /* Push to the right */
 }
 
 .nav-button {
@@ -383,27 +394,15 @@ main {
   display: flex;
   align-items: center;
   gap: 15px;
-  font-size: 0.9em;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 5px 15px;
+  border-radius: 20px;
 }
 
 .user-info span {
   font-weight: 500;
-}
-
-.logout-button {
-  background-color: #FF6D00;
-  color: white;
-  border: none;
-  padding: 8px 15px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 0.9em;
-  font-weight: 500;
-  transition: background-color 0.3s ease;
-}
-
-.logout-button:hover {
-  background-color: #e66200;
+  font-size: 0.85em;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 /* Social Auth Options */
@@ -447,4 +446,10 @@ main {
 .google-signin-button img {
   width: 24px;
   height: 24px;
+}
+
+.auth-logo {
+  display: block;
+  margin: 0 auto 20px auto;
+  width: 100px;
 }

@@ -16,9 +16,11 @@ const DashboardLayout = () => {
           <NavLink to="/ultimos-registros" className="nav-button">Últimos Registros</NavLink>
           <NavLink to="/reportes" className="nav-button">Reportes</NavLink>
         </nav>
-        <div className="user-info">
-          {user && <span>{user.email}</span>}
-          <button onClick={signOut} className="logout-button">Cerrar Sesión</button>
+        <div className="header-right-side">
+          <div className="user-info">
+            {user && <span>{user.email}</span>}
+            <button onClick={signOut} className="nav-button">Cerrar Sesión</button>
+          </div>
         </div>
       </header>
       <main>
