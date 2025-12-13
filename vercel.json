@@ -20,15 +20,15 @@
     },
     {
       "src": "/favicon.ico",
-      "dest": "dashboard-frontend/dist/favicon.ico"
+      "dest": "/favicon.ico"
     },
     {
       "src": "/assets/(.*)",
-      "dest": "dashboard-frontend/dist/assets/$1"
+      "dest": "/assets/$1"
     },
     {
       "src": "/(.*)",
-      "dest": "dashboard-frontend/dist/index.html"
+      "dest": "/index.html"
     }
   ]
 }
