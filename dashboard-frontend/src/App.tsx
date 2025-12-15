@@ -4,6 +4,7 @@ import './App.css';
 // Page Imports
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import RoleSelectionPage from './pages/RoleSelectionPage';
 
 // Layout and Protection
 import DashboardLayout from './layouts/DashboardLayout';
@@ -27,6 +28,7 @@ function App() {
           
           {/* Protected Routes */}
           <Route element={<ProtectedRoute />}>
+            <Route path="/role-selection" element={<RoleSelectionPage />} />
             <Route element={<DashboardLayout />}>
               <Route index element={<PermisosDashboard />} />
               <Route path="/recaudacion" element={<RecaudacionDashboard />} />

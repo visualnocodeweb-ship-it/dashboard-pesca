@@ -22,7 +22,7 @@ const LoginPage = () => {
     if (error) {
       setError(error.message);
     } else {
-      navigate('/'); // Redirect to dashboard on successful login
+      navigate('/role-selection'); // Redirect to role selection on successful login
     }
     setLoading(false);
   };
