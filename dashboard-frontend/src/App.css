@@ -405,6 +405,69 @@ main {
   color: rgba(255, 255, 255, 0.9);
 }
 
+/* Role Selection Page Styles */
+.role-selection-buttons-container {
+  display: flex;
+  flex-direction: column; /* Stack buttons vertically */
+  gap: 15px; /* Space between buttons */
+  margin-top: 25px; /* Space from the paragraph above */
+}
+
+.role-selection-buttons-container .role-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #00BFA5; /* Primary color for action buttons */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.role-selection-buttons-container .role-button:hover {
+  background-color: #008f80; /* Darker shade on hover */
+}
+
+.role-selection-buttons-container .gestor-button {
+    background-color: #FF6D00; /* Distinct color for gestor button */
+}
+
+.role-selection-buttons-container .gestor-button:hover {
+    background-color: #e66200; /* Darker shade for gestor on hover */
+}
+
+.gestor-form {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.gestor-form .input-group {
+    margin-bottom: 15px;
+}
+
+.gestor-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #00BFA5;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.gestor-form button:hover {
+    background-color: #008f80;
+}
+
+
 /* Social Auth Options */
 .social-auth-options {
   margin-top: 25px;

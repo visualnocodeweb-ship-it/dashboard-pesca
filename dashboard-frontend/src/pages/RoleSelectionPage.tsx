@@ -31,7 +31,7 @@ const RoleSelectionPage = () => {
       <h2>Seleccionar Rol</h2>
       <p>Has iniciado sesión. Ahora, elige cómo quieres entrar al panel.</p>
 
-      <div className="role-selection-options">
+      <div className="role-selection-buttons-container">
         <button onClick={handleComunSelect} className="role-button">
           Entrar como Usuario Común
         </button>
