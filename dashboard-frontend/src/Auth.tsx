@@ -81,7 +81,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }
       return true;
     }
     if (selected === 'gestor') {
-      const GESTOR_PASS = 'adminfauna';
+      const GESTOR_PASS = import.meta.env.VITE_GESTOR_PASSWORD;
       if (password === GESTOR_PASS) {
         localStorage.setItem('userRole', 'gestor');
         setRole('gestor');
